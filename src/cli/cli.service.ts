@@ -3,6 +3,7 @@ import { Command } from "commander"
 import { NestFactory } from "@nestjs/core"
 import { AppModule } from "../app.module"
 import { ConfigService } from "@nestjs/config"
+import startCommand from "./commands/startCommand"
 
 @Injectable()
 export class CLIService {
@@ -17,18 +18,9 @@ export class CLIService {
     private readonly port: number
 
     private setupCommands(): void {
-        this.program
-            .command("start")
-            .description("Start the NestJS server")
-            .action(async () => {
-                const app = await NestFactory.create(AppModule)
+        const start = startCommand(NestFactory, AppModule, this.logger)
 
-                await app.listen(this.port)
-
-                this.logger.log(
-                    `App is in CLI-mode and listening at port -> ${this.port}`
-                )
-            })
+        start(this.program, this.port)
     }
 
     public async run(args: string[]): Promise<void> {

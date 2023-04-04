@@ -5,8 +5,10 @@ Ask questions to custom data not included during an LLMs pre-training.
 ## Installation
 
 ```bash
-$ npm run cli start
+$ npm install
 ```
+
+Use the env.example to set up the .env file.
 
 ## Running the app
 
