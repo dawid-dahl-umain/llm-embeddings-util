@@ -3,22 +3,28 @@ import { AppModule } from "./app.module"
 import { CLIService } from "./cli/cli.service"
 import { ConfigService } from "@nestjs/config"
 import { OneOrZero } from "./types"
+import { Logger } from "@nestjs/common"
 
 async function bootstrap() {
+    const logger = new Logger("Bootstrap")
+
     const app = await NestFactory.create(AppModule)
+
+    app.useLogger(logger)
 
     const configService = app.get(ConfigService)
     const port = configService.get<number>("PORT", 3000)
     const cliMode = configService.get<OneOrZero>("CLI_MODE", 1)
 
-    const cliService = app.get(CLIService)
+    if (Number(cliMode)) {
+        const cliService = app.get(CLIService)
 
-    await cliService.run(process.argv)
+        await cliService.run(process.argv)
+    } else {
+        logger.log(`App is listening at port -> ${port}`)
 
-    console.log("cliMode", cliMode)
-
-    if (!cliMode) {
         await app.listen(3001)
     }
 }
+
 bootstrap()
