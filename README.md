@@ -20,10 +20,16 @@ Change the CLI_MODE variable in the .env file to:
 CLI_MODE=1
 ```
 
-Then use this command to start the app:
+Then to use a command, like e.g. an "exclaim" command which would add an exclamation mark to an input:
 
 ```bash
-npm run cli start
+npm run cli exclaim Hello
+```
+
+This command will output:
+
+```bash
+Hello!
 ```
 
 ### To run the app in normal mode:

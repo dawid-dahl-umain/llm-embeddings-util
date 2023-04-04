@@ -4,6 +4,7 @@ import { NestFactory } from "@nestjs/core"
 import { AppModule } from "../app.module"
 import { ConfigService } from "@nestjs/config"
 import startCommand from "./commands/startCommand"
+import exclaimCommand from "./commands/exclaimCommand"
 
 @Injectable()
 export class CLIService {
@@ -19,8 +20,10 @@ export class CLIService {
 
     private setupCommands(): void {
         const start = startCommand(NestFactory, AppModule, this.logger)
+        const exclaim = exclaimCommand(this.logger)
 
         start(this.program, this.port)
+        exclaim(this.program)
     }
 
     public async run(args: string[]): Promise<void> {
