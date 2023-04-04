@@ -1,14 +1,24 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { CLIService } from './cli/cli.service';
+import { NestFactory } from "@nestjs/core"
+import { AppModule } from "./app.module"
+import { CLIService } from "./cli/cli.service"
+import { ConfigService } from "@nestjs/config"
+import { OneOrZero } from "./types"
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(AppModule)
 
-  const cliService = app.get(CLIService);
+    const configService = app.get(ConfigService)
+    const port = configService.get<number>("PORT", 3000)
+    const cliMode = configService.get<OneOrZero>("CLI_MODE", 1)
 
-  await cliService.run(process.argv);
+    const cliService = app.get(CLIService)
 
-  await app.listen(3000);
+    await cliService.run(process.argv)
+
+    console.log("cliMode", cliMode)
+
+    if (!cliMode) {
+        await app.listen(3001)
+    }
 }
-bootstrap();
+bootstrap()

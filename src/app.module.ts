@@ -1,11 +1,12 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { CLIModule } from './cli/cli.module';
+import { Module } from "@nestjs/common"
+import { AppController } from "./app.controller"
+import { AppService } from "./app.service"
+import { CLIModule } from "./cli/cli.module"
+import { ConfigModule } from "@nestjs/config"
 
 @Module({
-  imports: [CLIModule],
-  controllers: [AppController],
-  providers: [AppService],
+    imports: [ConfigModule.forRoot(), CLIModule],
+    controllers: [AppController],
+    providers: [AppService]
 })
 export class AppModule {}

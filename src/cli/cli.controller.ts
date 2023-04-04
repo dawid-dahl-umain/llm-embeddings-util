@@ -1,7 +1,7 @@
-import { Controller } from '@nestjs/common';
-import { CLIService } from './cli.service';
+import { Controller } from "@nestjs/common"
+import { CLIService } from "./cli.service"
 
-@Controller('cli')
+@Controller("cli")
 export class CLIController {
-  constructor(private readonly cliService: CLIService) {}
+    constructor(private readonly cliService: CLIService) {}
 }
