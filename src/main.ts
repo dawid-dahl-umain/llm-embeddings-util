@@ -27,7 +27,7 @@ async function bootstrap() {
     if (Number(cliMode) === 1) {
         const cliService = app.get(CLIService)
 
-        await cliService.run(process.argv)
+        await cliService.run()
 
         return
     }
