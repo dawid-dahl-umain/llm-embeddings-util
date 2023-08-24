@@ -1,35 +1,10 @@
 import * as dotenv from "dotenv"
 import { Logger } from "@nestjs/common"
 import { Command } from "commander"
-import { createChat } from "completions"
-import { getCountryPineconeCount, logGptResponse } from "../../utils/utils"
+import { getCountryPineconeCount } from "../../utils/utils"
+import OpenAI from "openai"
 
 dotenv.config()
-
-const chat = createChat({
-    apiKey: process.env.OPENAI_API_KEY,
-    model: "gpt-3.5-turbo-0613",
-    functions: [
-        {
-            name: "getCountryPineconeCount",
-            description:
-                "Get the pinecone count inside any country on the planet",
-            parameters: {
-                type: "object",
-                properties: {
-                    country: {
-                        type: "string",
-                        description:
-                            "The country of which the pinecone count should be given"
-                    }
-                },
-                required: ["country"]
-            },
-            function: getCountryPineconeCount
-        }
-    ],
-    functionCall: "auto"
-})
 
 const chatCommand =
     (logger: Logger) =>
@@ -50,13 +25,34 @@ const chatCommand =
                     throw new Error("You need to supply a query")
                 }
 
-                try {
-                    const response = await chat.sendMessage(query)
+                const openai = new OpenAI({
+                    apiKey: openAiApiKey
+                })
 
-                    logGptResponse(logger)(response)
-                } catch (error) {
-                    logger.error(error)
-                }
+                const completion = await openai.chat.completions.create({
+                    messages: [{ role: "user", content: query }],
+                    model: "gpt-3.5-turbo-0613",
+                    functions: [
+                        {
+                            name: "getCountryPineconeCount",
+                            description:
+                                "Get the pinecone count inside any country on the planet",
+                            parameters: {
+                                type: "object",
+                                properties: {
+                                    country: {
+                                        type: "string",
+                                        description:
+                                            "The country of which the pinecone count should be given"
+                                    }
+                                },
+                                required: ["country"]
+                            }
+                        }
+                    ]
+                })
+
+                logger.log(completion.choices)
             })
 
 export default chatCommand
