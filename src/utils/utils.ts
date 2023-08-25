@@ -12,7 +12,7 @@ export const getCountryPineconeCount = async (
         )
     }
 
-    return Promise.resolve(Math.floor(Math.random() * 10))
+    return Promise.resolve(Math.floor(Math.random() * 100))
 }
 
 export const logGptResponseUnconfig =
@@ -25,7 +25,6 @@ export const logGptResponseUnconfig =
         }
 
         if (debug) {
-            console.log(11111)
             if (isChatCompletionChoice(response)) {
                 logger.log(
                     colors.bold("Choice:" + JSON.stringify(response, null, 2))

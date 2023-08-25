@@ -10,6 +10,7 @@ import { Command } from "commander"
 import OpenAI from "openai"
 import { ChatCompletionMessage } from "openai/resources/chat"
 import { ChatOptions } from "src/types"
+import gptFunctions from "src/utils/gptFunctions"
 
 dotenv.config()
 
@@ -62,25 +63,9 @@ const chatCommand =
                         const completion = await openai.chat.completions.create(
                             {
                                 messages: messages,
-                                model: "gpt-3.5-turbo-0613"
-                                /* functions: [
-                                {
-                                    name: "getCountryPineconeCount",
-                                    description:
-                                        "Get the pinecone count inside any country on the planet",
-                                    parameters: {
-                                        type: "object",
-                                        properties: {
-                                            country: {
-                                                type: "string",
-                                                description:
-                                                    "The country of which the pinecone count should be given"
-                                            }
-                                        },
-                                        required: ["country"]
-                                    }
-                                }
-                            ] */
+                                model: "gpt-3.5-turbo-0613",
+                                functions: gptFunctions,
+                                function_call: "auto"
                             }
                         )
 
