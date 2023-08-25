@@ -37,12 +37,33 @@ Hello!
 If options are available to the commands, you add them like this:
 
 ```bash
-npm run cli -- chat "This is my query..." -k some-api-key
+npm run cli -- chat -k some-api-key
 ```
 
 The reason we need the double dash (--) detailed here:
 
 [Learn more about handling command-line options with npm run-script](https://github.com/tj/commander.js?#npm-run-script)
+
+### To use the chat command
+
+```bash
+npm run cli -- chat -k some-api-key
+```
+
+Or if you've set the Open AI API key in the .env file:
+
+```bash
+npm run cli chat
+```
+
+To quit the chat mode, type **exit** or **quit**.
+
+#### Options
+
+| Option                   | Description                                                     | Example                                 |
+| ------------------------ | --------------------------------------------------------------- | --------------------------------------- |
+| \`-k, --api-key\`        | OpenAI API key (.env alternative)                               | \`npm run cli -- chat -k some-api-key\` |
+| \`-d, --response-debug\` | Whether to post the chat response data and not just the message | \`npm run cli -- chat -d\`              |
 
 ### To run the app in normal mode:
 
