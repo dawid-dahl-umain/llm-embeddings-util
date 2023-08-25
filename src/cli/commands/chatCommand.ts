@@ -9,7 +9,7 @@ import {
 import { Logger } from "@nestjs/common"
 import { Command } from "commander"
 import OpenAI from "openai"
-import { ChatCompletionMessage } from "openai/resources/chat"
+import { CreateChatCompletionRequestMessage } from "openai/resources/chat"
 import { ChatOptions } from "src/types"
 import {
     gptAbstractFunctionsArray,
@@ -39,12 +39,14 @@ const chatCommand =
                     : logGptResponseUnconfig(logger)
                 const openAiApiKey =
                     process.env.OPENAI_API_KEY || options.apiKey
-                const systemPrompt: ChatCompletionMessage = {
+                const systemPrompt: CreateChatCompletionRequestMessage = {
                     role: "system",
                     content:
                         "You try to keep your answers fairly short, unless the context requires the message to be slightly longer."
                 }
-                const chatHistory: ChatCompletionMessage[] = [systemPrompt]
+                const chatHistory: CreateChatCompletionRequestMessage[] = [
+                    systemPrompt
+                ]
 
                 if (!openAiApiKey) {
                     throw new Error("Couldn't get the OpenAI API Key")
@@ -97,34 +99,36 @@ const chatCommand =
                             const functionResult = await selectedFunction(
                                 functionArguments
                             )
-                            console.log("functionName -->", functionName)
-                            console.log(
-                                "functionArguments -->",
-                                functionArguments
-                            )
-                            console.log(
-                                "gptConcreteFunctionsRecord -->",
-                                gptConcreteFunctionsRecord
-                            )
-                            console.log(
-                                "selectedFunction -->",
-                                selectedFunction.name
-                            )
-                            console.log("functionResult -->", functionResult)
+
+                            chatHistory.push({
+                                role: "user",
+                                content: userInput ? userInput : ""
+                            })
+                            chatHistory.push({
+                                role: "assistant",
+                                content: completion?.choices[0].message?.content
+                                    ? completion.choices[0].message.content
+                                    : ""
+                            })
+                            chatHistory.push({
+                                role: "function",
+                                name: functionName,
+                                content: functionResult
+                            })
                         } else {
                             logGptResponse(completion)
-                        }
 
-                        chatHistory.push({
-                            role: "user",
-                            content: userInput ? userInput : ""
-                        })
-                        chatHistory.push({
-                            role: "assistant",
-                            content: completion?.choices[0].message?.content
-                                ? completion.choices[0].message.content
-                                : ""
-                        })
+                            chatHistory.push({
+                                role: "user",
+                                content: userInput ? userInput : ""
+                            })
+                            chatHistory.push({
+                                role: "assistant",
+                                content: completion?.choices[0].message?.content
+                                    ? completion.choices[0].message.content
+                                    : ""
+                            })
+                        }
                     }
                 } catch (e) {
                     logger.error(e)
