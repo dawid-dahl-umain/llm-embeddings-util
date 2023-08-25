@@ -1,45 +1,64 @@
 import * as colors from "colors"
 import { Logger } from "@nestjs/common"
 import { ChatCompletion, ChatCompletionMessage } from "openai/resources/chat"
-import { isChatCompletionMessage, isChatCompletionChoice } from "../types"
+import {
+    isChatCompletionMessage,
+    isChatCompletionChoice,
+    isChatCompletion
+} from "../types"
 
-export const getCountryPineconeCount = async (
-    country: "string"
-): Promise<number> => {
-    if (!country) {
-        throw new Error(
-            "A country needs to be specified for pinecone count to be calculated"
-        )
-    }
+export const isQuitMessage = (userInput: string) =>
+    userInput.toLowerCase().replace(/[^\w\s]/gi, "") === "exit" ||
+    userInput.toLowerCase().replace(/[^\w\s]/gi, "") === "quit"
 
-    return Promise.resolve(Math.floor(Math.random() * 100))
-}
+export const hasCalledFunction = (userInput: ChatCompletion) =>
+    userInput.choices[0].message.function_call &&
+    userInput.choices[0].finish_reason !== "stop"
 
 export const logGptResponseUnconfig =
     (logger: Logger, debug = false) =>
-    (response: ChatCompletion.Choice | ChatCompletionMessage): void => {
+    (response: ChatCompletion | ChatCompletionMessage): void => {
         if (!logger || !response) {
             throw new Error(
                 "Couldn't log the GPT response, missing either the logger or the response"
             )
         }
-
         if (debug) {
-            if (isChatCompletionChoice(response)) {
+            if (isChatCompletion(response)) {
                 logger.log(
-                    colors.bold("Choice:" + JSON.stringify(response, null, 2))
+                    colors.bold(
+                        response.choices[0].message.content
+                            ? `Choice: ${JSON.stringify(
+                                  response.choices[0],
+                                  null,
+                                  2
+                              )}`
+                            : `"Should I maybe call a function...?" 💭 \n ${JSON.stringify(
+                                  response.choices[0],
+                                  null,
+                                  2
+                              )}`
+                    )
                 )
             } else if (isChatCompletionMessage(response)) {
                 logger.log(
-                    colors.bold("Message:" + JSON.stringify(response, null, 2))
+                    colors.bold(`Message: ${JSON.stringify(response, null, 2)}`)
                 )
             }
 
             return
         }
 
-        if (isChatCompletionChoice(response)) {
-            logger.log(colors.bold(`${response.message.content}`))
+        if (isChatCompletion(response)) {
+            logger.log(
+                colors.bold(
+                    `${
+                        response.choices[0].message.content
+                            ? response.choices[0].message.content
+                            : '"Should I maybe call a function...? 💭"'
+                    }`
+                )
+            )
         } else if (isChatCompletionMessage(response)) {
             logger.log(colors.bold(`${response.content}`))
         }
