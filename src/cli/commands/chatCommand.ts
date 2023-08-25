@@ -62,10 +62,12 @@ const chatCommand =
                             colors.yellow("You: ")
                         )
 
-                        const messages = chatHistory.map(message => ({
-                            role: message.role,
-                            content: message.content
-                        }))
+                        const messages: CreateChatCompletionRequestMessage[] =
+                            chatHistory.map(message => ({
+                                role: message.role,
+                                name: message.name ? message.name : undefined,
+                                content: message.content
+                            }))
 
                         messages.push({ role: "user", content: userInput })
 
@@ -100,35 +102,37 @@ const chatCommand =
                                 functionArguments
                             )
 
-                            chatHistory.push({
+                            messages.push({
                                 role: "user",
                                 content: userInput ? userInput : ""
                             })
-                            chatHistory.push({
+                            messages.push({
                                 role: "assistant",
                                 content: completion?.choices[0].message?.content
                                     ? completion.choices[0].message.content
                                     : ""
                             })
-                            chatHistory.push({
+                            messages.push({
                                 role: "function",
                                 name: functionName,
-                                content: functionResult
+                                content: JSON.stringify(functionResult)
                             })
                         } else {
                             logGptResponse(completion)
 
-                            chatHistory.push({
+                            messages.push({
                                 role: "user",
                                 content: userInput ? userInput : ""
                             })
-                            chatHistory.push({
+                            messages.push({
                                 role: "assistant",
                                 content: completion?.choices[0].message?.content
                                     ? completion.choices[0].message.content
                                     : ""
                             })
                         }
+
+                        chatHistory.push(...messages)
                     }
                 } catch (e) {
                     logger.error(e)
