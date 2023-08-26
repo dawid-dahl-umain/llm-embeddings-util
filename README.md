@@ -12,7 +12,7 @@ Use the env.example to set up the .env file.
 
 ## Running the app
 
-Use Node version 16.
+Use Node version 18.
 
 ### To run the app in CLI mode:
 

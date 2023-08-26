@@ -28,7 +28,9 @@
         "colors": "^1.4.0",
         "commander": "^10.0.0",
         "dotenv": "^16.3.1",
+        "node-fetch": "^3.3.2",
         "openai": "^4.2.0",
+        "pokeapi-types": "^0.0.2",
         "readline-sync": "^1.4.10",
         "reflect-metadata": "^0.1.13",
         "rxjs": "^7.2.0"

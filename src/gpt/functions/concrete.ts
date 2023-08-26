@@ -1,43 +1,53 @@
-export const getCountryPineconeCount = async ({
-    country
+import { ArcCompany } from "src/types"
+import { getRandomOldSchoolPokemon } from "../../utils/utils"
+import { PokeAPI } from "pokeapi-types"
+
+export const getArcCompanyPineconeCount = async ({
+    company
 }: {
-    country: string
+    company: ArcCompany
 }): Promise<number> => {
-    if (!country) {
+    if (!company) {
         throw new Error(
-            "A country needs to be specified for pinecone count to be calculated"
+            "A company needs to be specified for pinecone count to be calculated"
         )
     }
 
     return Promise.resolve(Math.floor(Math.random() * 1000))
 }
 
-export const getPlanetPineconeCount = async ({
-    planet
+export const getArcCompanyPokemonArchtype = async ({
+    company
 }: {
-    planet: string
-}): Promise<number> => {
-    if (!planet) {
+    company: ArcCompany
+}): Promise<PokeAPI.Pokemon["name"]> => {
+    if (!company) {
         throw new Error(
-            "A planet needs to be specified for pinecone count to be calculated"
+            "A company needs to be specified for its Pokémon archetype to be given"
         )
     }
 
-    return Promise.resolve(Math.floor(Math.random() * 1000))
+    console.log("getArcCompanyPokemonArchtype company argument ->", company)
+
+    const randomPokemon = await getRandomOldSchoolPokemon().catch(
+        error => `Something went wrong while getting the Pokémon: ${error}`
+    )
+
+    return Promise.resolve(randomPokemon)
 }
 
 export type GptConcreteFunctionNames =
-    | "getCountryPineconeCount"
-    | "getPlanetPineconeCount"
+    | "getArcCompanyPineconeCount"
+    | "getArcCompanyPokemonArchtype"
 
 export type GptConcreteFunctionTypes =
-    | typeof getCountryPineconeCount
-    | typeof getPlanetPineconeCount
+    | typeof getArcCompanyPineconeCount
+    | typeof getArcCompanyPokemonArchtype
 
 export const gptConcreteFunctionsRecord: Record<
     GptConcreteFunctionNames,
     GptConcreteFunctionTypes
 > = {
-    getCountryPineconeCount: getCountryPineconeCount,
-    getPlanetPineconeCount: getPlanetPineconeCount
+    getArcCompanyPineconeCount: getArcCompanyPineconeCount,
+    getArcCompanyPokemonArchtype: getArcCompanyPokemonArchtype
 }

@@ -1,11 +1,8 @@
 import * as colors from "colors"
 import { Logger } from "@nestjs/common"
 import { ChatCompletion, ChatCompletionMessage } from "openai/resources/chat"
-import {
-    isChatCompletionMessage,
-    isChatCompletionChoice,
-    isChatCompletion
-} from "../types"
+import { isChatCompletionMessage, isChatCompletion } from "../types"
+import { PokeAPI } from "pokeapi-types"
 
 export const isQuitMessage = (userInput: string) =>
     userInput.toLowerCase().replace(/[^\w\s]/gi, "") === "exit" ||
@@ -72,4 +69,24 @@ export const removeElementsFromOffset = <T>(
     const beforeOffset = array.slice(0, startOffset)
     const afterRemoval = array.slice(startOffset + elementsToRemove)
     return [...beforeOffset, ...afterRemoval]
+}
+
+export const getRandomOldSchoolPokemon = async (): Promise<
+    PokeAPI.Pokemon["name"]
+> => {
+    const maxOldSchoolPokemonId = 151
+    const randomId = Math.floor(Math.random() * maxOldSchoolPokemonId) + 1
+    const apiUrl = `https://pokeapi.co/api/v2/pokemon/${randomId}`
+
+    try {
+        const response = await fetch(apiUrl)
+        const pokemon = (await response.json()) as PokeAPI.Pokemon
+        const pokemonUppercaseName =
+            pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)
+        console.log("POKEMON ->", pokemonUppercaseName)
+
+        return pokemonUppercaseName
+    } catch (error) {
+        return `An error occurred when retrieving a Pokémon: ${error}`
+    }
 }

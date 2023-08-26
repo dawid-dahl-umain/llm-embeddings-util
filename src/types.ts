@@ -1,5 +1,23 @@
 import { ChatCompletion, ChatCompletionMessage } from "openai/resources/chat"
 
+export type ArcCompany =
+    | "Above"
+    | "Animal"
+    | "Ariel"
+    | "BLCK"
+    | "Conversionista"
+    | "Cupole"
+    | "Curamando"
+    | "Curious Mind"
+    | "Fabrique"
+    | "Goods"
+    | "Heydays"
+    | "Kurppa Hosk"
+    | "Mission Anew"
+    | "Nameless.today"
+    | "Q42"
+    | "Umain"
+
 export type OneOrZero = 1 | 0
 
 export type ChatOptions = { apiKey: string; responseDebug: true | undefined }

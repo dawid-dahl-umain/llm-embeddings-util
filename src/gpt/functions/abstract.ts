@@ -1,44 +1,82 @@
 import { CompletionCreateParams } from "openai/resources/chat"
 import { GptConcreteFunctionNames } from "./concrete"
 
-const getCountryPineconeCountGptFunction: CompletionCreateParams.Function = {
-    name: "getCountryPineconeCount",
-    description: "Get the pinecone count inside any country on the planet",
+const getArcCompanyPineconeCountGptFunction: CompletionCreateParams.Function = {
+    name: "getArcCompanyPineconeCount",
+    description: "Get the pinecone count of any of the ARC companies.",
     parameters: {
         type: "object",
         properties: {
-            country: {
+            company: {
                 type: "string",
+                enum: [
+                    "Above",
+                    "Animal",
+                    "Ariel",
+                    "BLCK",
+                    "Conversionista",
+                    "Cupole",
+                    "Curamando",
+                    "Curious Mind",
+                    "Fabrique",
+                    "Goods",
+                    "Heydays",
+                    "Kurppa Hosk",
+                    "Mission Anew",
+                    "Nameless.today",
+                    "Q42",
+                    "Umain"
+                ],
                 description:
-                    "The country of which the pinecone count should be given"
+                    "The company within ARC of which the pinecone count should be calculated"
             }
         },
-        required: ["country"]
+        required: ["company"]
     }
 }
 
-const getPlanetPineconeCountGptFunction: CompletionCreateParams.Function = {
-    name: "getPlanetPineconeCount",
-    description: "Get the pinecone count of any planet in the universe",
-    parameters: {
-        type: "object",
-        properties: {
-            planet: {
-                type: "string",
-                description:
-                    "The planet of which the pinecone count should be given"
-            }
-        },
-        required: ["planet"]
+const getArcCompanyPokemonArchtypeGptFunction: CompletionCreateParams.Function =
+    {
+        name: "getArcCompanyPokemonArchtype",
+        description:
+            "Get the Pokémon representation of any of the Arc companies, which represents their archetype or spirit",
+        parameters: {
+            type: "object",
+            properties: {
+                company: {
+                    type: "string",
+                    enum: [
+                        "Above",
+                        "Animal",
+                        "Ariel",
+                        "BLCK",
+                        "Conversionista",
+                        "Cupole",
+                        "Curamando",
+                        "Curious Mind",
+                        "Fabrique",
+                        "Goods",
+                        "Heydays",
+                        "Kurppa Hosk",
+                        "Mission Anew",
+                        "Nameless.today",
+                        "Q42",
+                        "Umain"
+                    ],
+                    description:
+                        "The company within ARC of which the Pokémon archetype should be given"
+                }
+            },
+            required: ["company"]
+        }
     }
-}
 
 export const gptAbstractFunctionsRecord: Record<
     GptConcreteFunctionNames,
     CompletionCreateParams.Function
 > = {
-    getCountryPineconeCount: getCountryPineconeCountGptFunction,
-    getPlanetPineconeCount: getPlanetPineconeCountGptFunction
+    getArcCompanyPineconeCount: getArcCompanyPineconeCountGptFunction,
+    getArcCompanyPokemonArchtype: getArcCompanyPokemonArchtypeGptFunction
 }
 
 export const gptAbstractFunctionsArray: CompletionCreateParams.Function[] =
