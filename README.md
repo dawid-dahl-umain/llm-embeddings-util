@@ -60,7 +60,7 @@ Then use this command to start the app:
 npm start
 ```
 
-## To use the chat functionality
+# To use the chat functionality
 
 ```bash
 npm run cli -- chat -k some-api-key
