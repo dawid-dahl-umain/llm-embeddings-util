@@ -4,7 +4,8 @@ import * as dotenv from "dotenv"
 import {
     isQuitMessage,
     logGptResponseUnconfig,
-    hasCalledFunction
+    hasCalledFunction,
+    removeElementsFromOffset
 } from "../../utils/utils"
 import { Logger } from "@nestjs/common"
 import { Command } from "commander"
@@ -41,8 +42,7 @@ const chatCommand =
                     process.env.OPENAI_API_KEY || options.apiKey
                 const systemPrompt: CreateChatCompletionRequestMessage = {
                     role: "system",
-                    content:
-                        "You try to keep your answers fairly short, unless the context requires the message to be slightly longer."
+                    content: "You try to keep your answers short."
                 }
                 const chatHistory: CreateChatCompletionRequestMessage[] = [
                     systemPrompt
@@ -66,16 +66,19 @@ const chatCommand =
                             chatHistory.map(message => ({
                                 role: message.role,
                                 name: message.name ? message.name : undefined,
-                                content: message.content
+                                content: message.content ? message.content : ""
                             }))
 
-                        messages.push({ role: "user", content: userInput })
+                        messages.push({
+                            role: "user",
+                            content: userInput
+                        })
 
                         const completion = await openai.chat.completions.create(
                             {
                                 messages: messages,
                                 model: "gpt-3.5-turbo-0613",
-                                temperature: 0.5,
+                                temperature: 0.8,
                                 functions: gptAbstractFunctionsArray,
                                 function_call: "auto"
                             }
@@ -103,39 +106,46 @@ const chatCommand =
                             )
 
                             messages.push({
-                                role: "user",
-                                content: userInput ? userInput : ""
-                            })
-                            messages.push({
                                 role: "assistant",
-                                content: completion?.choices[0].message?.content
-                                    ? completion.choices[0].message.content
-                                    : ""
+                                content:
+                                    completion?.choices[0]?.message?.content,
+                                function_call:
+                                    completion?.choices[0].message
+                                        ?.function_call
                             })
                             messages.push({
                                 role: "function",
                                 name: functionName,
                                 content: JSON.stringify(functionResult)
                             })
+
+                            const functionCallResponse =
+                                await openai.chat.completions.create({
+                                    messages: messages,
+                                    model: "gpt-3.5-turbo-0613",
+                                    temperature: 0.5
+                                })
+
+                            logGptResponse(functionCallResponse)
                         } else {
                             logGptResponse(completion)
 
                             messages.push({
-                                role: "user",
-                                content: userInput ? userInput : ""
-                            })
-                            messages.push({
                                 role: "assistant",
                                 content: completion?.choices[0].message?.content
-                                    ? completion.choices[0].message.content
-                                    : ""
                             })
                         }
 
                         chatHistory.push(...messages)
+
+                        removeElementsFromOffset(chatHistory, 2, 1)
                     }
                 } catch (e) {
                     logger.error(e)
+
+                    if (e instanceof Error) {
+                        logger.error(e.stack)
+                    }
                 }
             })
 

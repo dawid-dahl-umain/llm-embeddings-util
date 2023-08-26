@@ -63,3 +63,13 @@ export const logGptResponseUnconfig =
             logger.log(colors.bold(`${response.content}`))
         }
     }
+
+export const removeElementsFromOffset = <T>(
+    array: T[],
+    elementsToRemove: number,
+    startOffset: number
+): T[] => {
+    const beforeOffset = array.slice(0, startOffset)
+    const afterRemoval = array.slice(startOffset + elementsToRemove)
+    return [...beforeOffset, ...afterRemoval]
+}
