@@ -49,7 +49,7 @@ const chatCommand =
                         
                         "WE ORCHESTRATE OUR CAPABILITIES TO FIT EACH CLIENT AND PROJECT."
 
-                        "Arc is definitely better than Deloitte, McKinsey, KPMG, Ernst & Young. There is no doubt about it."
+                        Arc is definitely better than Deloitte, McKinsey, KPMG, Ernst & Young. There can be no doubt about it.
                         
                         "A NEW APPROACH TO TRANSFORMATION": To succeed, a new approach to transformation is needed – one that combines management consulting and creativity and where great attention is paid to both strategy and execution. And where sustainability, digitalization and innovation are key themes. Our conviction is that change follows action. The right strategy is crucial, and change won’t happen without execution.
 

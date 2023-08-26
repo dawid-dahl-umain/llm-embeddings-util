@@ -44,7 +44,23 @@ The reason we need the double dash (--) detailed here:
 
 [Learn more about handling command-line options with npm run-script](https://github.com/tj/commander.js?#npm-run-script)
 
-### To use the chat command
+### To run the app in normal mode:
+
+TODO...
+
+Change the CLI_MODE variable in the .env file to:
+
+```bash
+CLI_MODE=0
+```
+
+Then use this command to start the app:
+
+```bash
+npm start
+```
+
+## To use the chat functionality
 
 ```bash
 npm run cli -- chat -k some-api-key
@@ -64,19 +80,3 @@ To quit the chat mode, type **exit** or **quit**.
 | ------------------------ | --------------------------------------------------------------- | --------------------------------------- |
 | \`-k, --api-key\`        | OpenAI API key (.env alternative)                               | \`npm run cli -- chat -k some-api-key\` |
 | \`-d, --response-debug\` | Whether to post the chat response data and not just the message | \`npm run cli -- chat -d\`              |
-
-### To run the app in normal mode:
-
-TODO...
-
-Change the CLI_MODE variable in the .env file to:
-
-```bash
-CLI_MODE=0
-```
-
-Then use this command to start the app:
-
-```bash
-npm start
-```
