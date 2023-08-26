@@ -83,7 +83,6 @@ export const getRandomOldSchoolPokemon = async (): Promise<
         const pokemon = (await response.json()) as PokeAPI.Pokemon
         const pokemonUppercaseName =
             pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)
-        console.log("POKEMON ->", pokemonUppercaseName)
 
         return pokemonUppercaseName
     } catch (error) {

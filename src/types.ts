@@ -18,6 +18,8 @@ export type ArcCompany =
     | "Q42"
     | "Umain"
 
+export type Currency = "SEK" | "Dollar" | "British Pounds" | "Euro"
+
 export type OneOrZero = 1 | 0
 
 export type ChatOptions = { apiKey: string; responseDebug: true | undefined }
