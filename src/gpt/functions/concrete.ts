@@ -1,7 +1,7 @@
-import { ArcCompany, Currency } from "src/types"
-import { getRandomOldSchoolPokemon } from "../../utils/utils"
 import * as colors from "colors"
 import { PokeAPI } from "pokeapi-types"
+import { ArcCompany, Currency } from "src/types"
+import { getRandomOldSchoolPokemon } from "../../utils/utils"
 
 export const getArcCompanyPineconeCount = async ({
     company

@@ -1,8 +1,8 @@
-import * as colors from "colors"
 import { Logger } from "@nestjs/common"
+import * as colors from "colors"
 import { ChatCompletion, ChatCompletionMessage } from "openai/resources/chat"
-import { isChatCompletionMessage, isChatCompletion } from "../types"
 import { PokeAPI } from "pokeapi-types"
+import { isChatCompletion, isChatCompletionMessage } from "../types"
 
 export const isQuitMessage = (userInput: string) =>
     userInput.toLowerCase().replace(/[^\w\s]/gi, "") === "exit" ||
