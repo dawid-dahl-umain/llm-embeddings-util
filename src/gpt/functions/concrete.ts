@@ -10,7 +10,7 @@ export const getArcCompanyPineconeCount = async ({
 }): Promise<number> => {
     if (!company) {
         throw new Error(
-            "A company needs to be specified for pinecone count to be calculated"
+            "A company needs to be specified for a pinecone count to be calculated"
         )
     }
 

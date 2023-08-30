@@ -1,6 +1,6 @@
 import { CreateChatCompletionRequestMessage } from "openai/resources/chat"
 
-const systemPrompt: CreateChatCompletionRequestMessage = {
+export const systemPrompt: CreateChatCompletionRequestMessage = {
     role: "system",
     content: `You try to keep your answers short. Never longer than 8 sentences. 
         
@@ -36,4 +36,10 @@ const systemPrompt: CreateChatCompletionRequestMessage = {
         `
 }
 
-export default systemPrompt
+export const codeSmellSystemPrompt: CreateChatCompletionRequestMessage = {
+    role: "system",
+    content: `You try to keep your answers short. Never longer than 8 sentences. 
+            
+            Your purpose in life is to generate code smells. You will be given some programming code, and then try to find code smells in it.
+            `
+}

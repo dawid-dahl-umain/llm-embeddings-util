@@ -24,6 +24,8 @@ export type OneOrZero = 1 | 0
 
 export type ChatOptions = { apiKey: string; responseDebug: true | undefined }
 
+export type CodeSmell = { lineNumber: number; comment: string }
+
 export const isChatCompletion = (
     completion: any // Adjust this as needed based on the possible types you are checking against
 ): completion is ChatCompletion =>

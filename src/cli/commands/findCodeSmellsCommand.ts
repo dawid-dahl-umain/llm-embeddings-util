@@ -7,8 +7,8 @@ import { CreateChatCompletionRequestMessage } from "openai/resources/chat"
 import * as readlineSync from "readline-sync"
 import { systemPrompt } from "../../gpt/prompts/systemPrompt"
 import { ChatOptions } from "src/types"
-import { gptAbstractFunctionsArray } from "../../gpt/functions/abstract"
-import { gptConcreteFunctionsRecord } from "../../gpt/functions/concrete"
+import { gptAbstractCodeSmellFunctionsArray } from "../../gpt/functions/code-smells/abstract"
+import { gptConcreteCodeSmellFunctionsRecord } from "../../gpt/functions/code-smells/concrete"
 import {
     hasCalledFunction,
     isQuitMessage,
@@ -18,12 +18,12 @@ import {
 
 dotenv.config()
 
-const chatCommand =
+const findCodeSmellsCommand =
     (logger: Logger) =>
     (program: Command): Command =>
         program
-            .command("chat")
-            .description("Chat with GPT")
+            .command("find-code-smells")
+            .description("Find code smells with Chat GPT")
             .option("-k, --api-key <>", "OpenAI API key (.env alternative)")
             .option(
                 "-d, --response-debug",
@@ -78,7 +78,7 @@ const chatCommand =
                                 messages: newChatHistory,
                                 model: openAiModel,
                                 temperature: 0.8,
-                                functions: gptAbstractFunctionsArray,
+                                functions: gptAbstractCodeSmellFunctionsArray,
                                 function_call: "auto"
                             }
                         )
@@ -100,7 +100,9 @@ const chatCommand =
                                     .arguments
                             )
                             const selectedFunction =
-                                gptConcreteFunctionsRecord[functionName]
+                                gptConcreteCodeSmellFunctionsRecord[
+                                    functionName
+                                ]
                             const functionResult = await selectedFunction(
                                 functionArguments
                             )
@@ -179,4 +181,4 @@ const chatCommand =
                 await chatLoop([systemPrompt])
             })
 
-export default chatCommand
+export default findCodeSmellsCommand

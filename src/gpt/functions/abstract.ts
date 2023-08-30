@@ -4,7 +4,7 @@ import { GptConcreteFunctionNames } from "./concrete"
 const getArcCompanyPineconeCountGptFunction: CompletionCreateParams.Function = {
     name: "getArcCompanyPineconeCount",
     description:
-        "Get the pinecone count of any of the ARC companies. At ARC, every company have a number of pinecones from the forest. It is not a metaphor, they are actual biological pinecones",
+        "Get the pinecone count of any of the ARC companies. At ARC, every company has a number of pinecones from the forest. It is not a metaphor, they are actual biological pinecones",
     parameters: {
         type: "object",
         properties: {
